@@ -5,7 +5,7 @@ import { Signup } from "../screens/signup/signup";
 
 function MainNav() {
 
-    const Stack = createNativeStackNavigator()
+    const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>

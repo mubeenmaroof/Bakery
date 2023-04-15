@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import { colors, modifiers } from '../utils/theme';
+import { colors, modifiers } from "../utils/theme";
 
 function BButton({
     title = 'title',

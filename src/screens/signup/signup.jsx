@@ -20,31 +20,31 @@ function Signup() {
             setShowPass(true)
         }
     }
-    // // const onSignupPress=()=>{
-    // //     console.log(userName, email, password);
-    // //     firebase.firestore().collection("users").doc("id002").set({
-    // //         user_name: userName,
-    // //         user_email: email,
-    // //         user_password:password,
-    // //     });
+    const onSignupPress = () => {
+        console.log(userName, email, password);
+        firebase.firestore().collection("users").doc("id002").set({
+            user_name: userName,
+            user_email: email,
+            user_password: password,
+        });
 
 
-    // };
+    };
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: colors.bgColors }}>
             <Header title={'Sign up'} />
             <View style={styles.formCon}>
 
-                <Input placeholder={'User Name'} showIcon={true} iconName={'person-outline'} onChange={setUserName} />
-                <Input placeholder={'Email'} showIcon={true} iconName={'mail-outline'} onChange={setEmail} />
+                <Input placeholder={'User Name'} showIcon={true} iconName={'person-outline'} />
+                <Input placeholder={'Email'} showIcon={true} iconName={'mail-outline'} />
 
                 <Input placeholder={'Password'}
                     isSecure={!showPass}
                     showIcon={true}
                     iconName={showPass === false ? 'eye-outline' : 'eye-off-outline'}
                     onIconPress={handleShowPass}
-                    onChange={setPassword}
+
                 />
                 <View style={styles.textBtnCon}>
                     <TextButton title={'Already have an account?'} onPress={onSignupPress} />

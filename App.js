@@ -3,12 +3,10 @@ import { MainNav } from "./src/navigation/appNavigator";
 
 
 
-function App() {
+export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <MainNav />
     </SafeAreaView>
-  )
+  );
 }
-
-export { App };
