@@ -5,13 +5,13 @@ import { Input } from "../../components/input";
 import { colors, modifiers } from "../../utils/theme";
 import { Header } from "../../components/header";
 import { TextButton } from "../../components/textButton";
-//import { firebase } from '../../services/firebaseConfig';
+import { firebase } from '../../services/firebaseConfig';
 
-function Signup() {
+function Signup({ navigation }) {
     const [showPass, setShowPass] = useState(false);
-    // const [userName, setUserName] = useState ();
-    // const [email,setEmail] = useState ();
-    // const [password, setPassword] = useState ();
+    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleShowPass = () => {
         if (showPass === true) {
@@ -21,36 +21,38 @@ function Signup() {
         }
     }
     const onSignupPress = () => {
-        console.log(userName, email, password);
-        firebase.firestore().collection("users").doc("id002").set({
-            user_name: userName,
-            user_email: email,
-            user_password: password,
+        firebase.firestore().collection('users').doc('id002').set({
+            users_name: userName,
+            users_email: email,
+            users_password: password,
         });
 
-
     };
-
+    const goToSiginp = () => {
+        navigation.navigate('Signin')
+    }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: colors.bgColors }}>
             <Header title={'Sign up'} />
             <View style={styles.formCon}>
 
-                <Input placeholder={'User Name'} showIcon={true} iconName={'person-outline'} />
-                <Input placeholder={'Email'} showIcon={true} iconName={'mail-outline'} />
+                <Input placeholder={'User Name'} showIcon={true} iconName={'person-outline'} onChange={setUserName} />
+                <Input placeholder={'Email'} showIcon={true} iconName={'mail-outline'} onChange={setEmail} />
 
                 <Input placeholder={'Password'}
                     isSecure={!showPass}
                     showIcon={true}
                     iconName={showPass === false ? 'eye-outline' : 'eye-off-outline'}
                     onIconPress={handleShowPass}
+                    onChange={setPassword}
+
 
                 />
                 <View style={styles.textBtnCon}>
-                    <TextButton title={'Already have an account?'} onPress={onSignupPress} />
+                    <TextButton title={'Already have an account?'} onPress={goToSiginp} />
                 </View>
 
-                <BButton title='Sign up' />
+                <BButton title='Sign up' onPress={onSignupPress} />
             </View>
         </ScrollView>
     );
