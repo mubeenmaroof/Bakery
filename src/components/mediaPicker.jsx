@@ -3,7 +3,7 @@ import Modal from "react-native-modal";
 import { BButton } from "./BButton";
 import { Ionicons } from '@expo/vector-icons';
 
-function MediaPicker({ show, onClose }) {
+function MediaPicker({ show, onClose, onCameraPressed, onGalleryPressed }) {
     return (
         <View>
             <Modal animationIn={'slideInUp'}
@@ -14,11 +14,11 @@ function MediaPicker({ show, onClose }) {
                 <View style={{ height: '35%', backgroundColor: 'white', justifyContent: 'center', padding: 30, borderRadius: 10 }}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <TouchableOpacity style={styles.circleView}>
+                        <TouchableOpacity style={styles.circleView} onPress={onCameraPressed}>
                             <Ionicons name={'camera-sharp'} size={50} color={'white'} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.circleView}>
+                        <TouchableOpacity style={styles.circleView} onPress={onGalleryPressed}>
                             <Ionicons name={'image-sharp'} size={50} color={'white'} />
                         </TouchableOpacity>
 

@@ -9,6 +9,7 @@ import { TextButton } from "../../components/textButton";
 import { Ionicons } from '@expo/vector-icons';
 import { MediaPicker } from '../../components/mediaPicker';
 import { firebase } from '../../services/firebaseConfig'
+import { CustomCamera } from '../../components/CustomCamera';
 
 
 function Signup({ navigation }) {
@@ -93,6 +94,7 @@ function Signup({ navigation }) {
 
             {/* Media Picker From Camera or Gallery*/}
             <MediaPicker show={isPickerShown} onClose={onImagePressed} />
+            <CustomCamera show={isCameraShown} />
 
         </ScrollView>
     );
