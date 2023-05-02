@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Camera, CameraType } from 'expo-camera';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { BButton } from "../../components/BButton";
 import { Input } from "../../components/input";
@@ -17,12 +16,8 @@ function Signup({ navigation }) {
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isPickerShown, setIsPickerShown] = useState(true);
-
-
-    function toggleCameraType() {
-        setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-    }
+    const [isPickerShown, setIsPickerShown] = useState(false);
+    const [isCameraShown, setIsCameraShown] = useState(false);
 
     const handleShowPass = () => {
         setShowPass(!showPass)
@@ -93,8 +88,8 @@ function Signup({ navigation }) {
             </View>
 
             {/* Media Picker From Camera or Gallery*/}
-            <MediaPicker show={isPickerShown} onClose={onImagePressed} />
-            <CustomCamera show={isCameraShown} />
+            <MediaPicker show={isPickerShown} onClose={onImagePressed} onCameraPressed={() => { setIsCameraShown(!isCameraShown) }} />
+            <CustomCamera show={isCameraShown} onClose={() => setIsCameraShown(false)} />
 
         </ScrollView>
     );

@@ -8,10 +8,10 @@ function MediaPicker({ show, onClose, onCameraPressed, onGalleryPressed }) {
         <View>
             <Modal animationIn={'slideInUp'}
                 animationOut={'slideOutDown'}
-                animationOutTiming={1500}
-                animationInTiming={1500}
+                animationOutTiming={1200}
+                animationInTiming={1200}
                 isVisible={show} style={{ flex: 1, justifyContent: 'flex-end' }}>
-                <View style={{ height: '35%', backgroundColor: 'white', justifyContent: 'center', padding: 30, borderRadius: 10 }}>
+                <View style={{ height: '35%', backgroundColor: 'white', justifyContent: 'center', padding: 10, borderRadius: 10 }}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                         <TouchableOpacity style={styles.circleView} onPress={onCameraPressed}>
