@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { BButton } from "../../components/BButton";
 import { Input } from "../../components/input";
 import { colors, modifiers } from "../../utils/theme";
@@ -18,6 +18,7 @@ function Signup({ navigation }) {
     const [password, setPassword] = useState('');
     const [isPickerShown, setIsPickerShown] = useState(false);
     const [isCameraShown, setIsCameraShown] = useState(false);
+    const [imageFromPicker, setImageFromPicker] = useState('');
 
     const handleShowPass = () => {
         setShowPass(!showPass)
@@ -57,6 +58,10 @@ function Signup({ navigation }) {
     const onImagePressed = () => {
         setIsPickerShown(!isPickerShown)
     };
+    const onImageCameFromGallery = (image) => {
+        setImageFromPicker(image.uri)
+        setIsPickerShown(false)
+    }
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: colors.bgColors }}>
@@ -65,7 +70,7 @@ function Signup({ navigation }) {
             {/* Image Picker From Camera */}
             <TouchableOpacity onPress={onImagePressed}>
                 <View style={styles.imagePicker}>
-                    <Ionicons name='md-image-sharp' color={'white'} size={50} />
+                    <Image source={{ uri: imageFromPicker }} style={{ width: 100, height: 100 }} />
                 </View>
             </TouchableOpacity>
 
@@ -88,7 +93,11 @@ function Signup({ navigation }) {
             </View>
 
             {/* Media Picker From Camera or Gallery*/}
-            <MediaPicker show={isPickerShown} onClose={onImagePressed} onCameraPressed={() => { setIsCameraShown(!isCameraShown) }} />
+            <MediaPicker show={isPickerShown}
+                onClose={onImagePressed}
+                onImagePickerSelected={(imageSelected) => { onImageCameFromGallery(imageSelected) }}
+                onCameraPressed={() => { setIsCameraShown(!isCameraShown) }}
+            />
             <CustomCamera show={isCameraShown} onClose={() => setIsCameraShown(false)} />
 
         </ScrollView>

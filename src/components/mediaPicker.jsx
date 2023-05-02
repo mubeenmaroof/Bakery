@@ -4,11 +4,21 @@ import { BButton } from "./BButton";
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-function MediaPicker({ show, onClose, onCameraPressed, onGalleryPressed }) {
+function MediaPicker({ show, onClose, onCameraPressed, onImagePickerSelected }) {
     const pickImageFrpmGallery = () => {
         ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All
-        }).then(response => { }).catch(error => { })
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 1
+        }).then(response => {
+            if (response.canceled) {
+                alert('Not Selected')
+            } else {
+                onImagePickerSelected(response.assets[0])
+            }
+        }).catch(error => {
+            alert('pick select nai kia')
+        })
 
     }
     return (
