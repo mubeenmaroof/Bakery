@@ -2,8 +2,15 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { BButton } from "./BButton";
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 function MediaPicker({ show, onClose, onCameraPressed, onGalleryPressed }) {
+    const pickImageFrpmGallery = () => {
+        ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All
+        }).then(response => { }).catch(error => { })
+
+    }
     return (
         <View>
             <Modal animationIn={'slideInUp'}
@@ -18,7 +25,7 @@ function MediaPicker({ show, onClose, onCameraPressed, onGalleryPressed }) {
                             <Ionicons name={'camera-sharp'} size={50} color={'white'} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.circleView} onPress={onGalleryPressed}>
+                        <TouchableOpacity style={styles.circleView} onPress={pickImageFrpmGallery}>
                             <Ionicons name={'image-sharp'} size={50} color={'white'} />
                         </TouchableOpacity>
 

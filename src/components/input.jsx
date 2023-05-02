@@ -30,7 +30,7 @@ export { Input }
 const styles = StyleSheet.create({
     inputCon: {
         paddingHorizontal: 20,
-        height: 90,
+        height: 70,
         backgroundColor: 'rgba(255,255,255,0.8)',
         marginHorizontal: 10,
         borderRadius: 5,
