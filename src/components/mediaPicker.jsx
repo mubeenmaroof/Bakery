@@ -40,7 +40,7 @@ function MediaPicker({ show, onClose, onCameraPressed, onImagePickerSelected }) 
                         </TouchableOpacity>
 
                     </View>
-                    <View style={{ marginTop: 25 }}>
+                    <View style={{ marginTop: 30 }}>
                         <BButton title={'Cancel'} onButtonPress={onClose} />
                     </View>
 

@@ -19,9 +19,14 @@ function Signup({ navigation }) {
     const [isPickerShown, setIsPickerShown] = useState(false);
     const [isCameraShown, setIsCameraShown] = useState(false);
     const [imageFromPicker, setImageFromPicker] = useState('');
+    const [imageFromCamera, setImageFromCamera] = useState('');
 
     const handleShowPass = () => {
         setShowPass(!showPass)
+    }
+    const onImageCameFromGallery = (image) => {
+        setImageFromPicker(image.uri)
+        setIsPickerShown(false)
     }
 
     // Firebase Auth 
@@ -58,10 +63,7 @@ function Signup({ navigation }) {
     const onImagePressed = () => {
         setIsPickerShown(!isPickerShown)
     };
-    const onImageCameFromGallery = (image) => {
-        setImageFromPicker(image.uri)
-        setIsPickerShown(false)
-    }
+
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: colors.bgColors }}>
@@ -70,7 +72,7 @@ function Signup({ navigation }) {
             {/* Image Picker From Camera */}
             <TouchableOpacity onPress={onImagePressed}>
                 <View style={styles.imagePicker}>
-                    <Image source={{ uri: imageFromPicker }} style={{ width: 100, height: 100 }} />
+                    <Image source={{ uri: imageFromPicker || imageFromCamera }} style={{ width: 100, height: 100, borderRadius: 50, }} resizeMode={'contain'} />
                 </View>
             </TouchableOpacity>
 
@@ -98,7 +100,13 @@ function Signup({ navigation }) {
                 onImagePickerSelected={(imageSelected) => { onImageCameFromGallery(imageSelected) }}
                 onCameraPressed={() => { setIsCameraShown(!isCameraShown) }}
             />
-            <CustomCamera show={isCameraShown} onClose={() => setIsCameraShown(false)} />
+            <CustomCamera show={isCameraShown}
+                onClose={() => setIsCameraShown(false)}
+                onPicktureTaken={(response) => {
+                    setIsCameraShown(false), setIsPickerShown(false)
+                    setImageFromCamera(response.uri)
+                }}
+            />
 
         </ScrollView>
     );
