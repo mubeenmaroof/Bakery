@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { MediaPicker } from '../../components/mediaPicker';
 import { firebase } from '../../services/firebaseConfig'
 import { CustomCamera } from '../../components/CustomCamera';
+import { uploadImage } from '../../services/uploadImage';
+import { Camera } from 'expo-camera';
 
 
 function Signup({ navigation }) {
@@ -38,7 +40,7 @@ function Signup({ navigation }) {
                 console.log('Signed up user:', user.uid);
 
                 // Add Username, Email, Password in Firestore
-                firebase.firestore().collection("All Users").doc(email).set({
+                firebase.firestore().collection("users").doc(email).set({
                     name: userName,
                     email: email,
                     password: password
@@ -53,7 +55,11 @@ function Signup({ navigation }) {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log('Error:', errorCode, errorMessage);
+
             });
+
+        uploadImage(imageFromCamera || imageFromPicker)
+
     };
     // Navigate to Sign in Page
     const goToSiginp = () => {
@@ -72,7 +78,7 @@ function Signup({ navigation }) {
             {/* Image Picker From Camera */}
             <TouchableOpacity onPress={onImagePressed}>
                 <View style={styles.imagePicker}>
-                    <Image source={{ uri: imageFromPicker || imageFromCamera }} style={{ width: 100, height: 100, borderRadius: 50, }} resizeMode={'contain'} />
+                    <Image source={{ uri: imageFromPicker || imageFromCamera }} style={{ width: 100, height: 100, borderRadius: 50 }} resizeMode={'contain'} />
                 </View>
             </TouchableOpacity>
 
