@@ -5,12 +5,11 @@ import { Input } from "../../components/input";
 import { colors, modifiers } from "../../utils/theme";
 import { Header } from "../../components/header";
 import { TextButton } from "../../components/textButton";
-import { Ionicons } from '@expo/vector-icons';
 import { MediaPicker } from '../../components/mediaPicker';
 import { firebase } from '../../services/firebaseConfig'
 import { CustomCamera } from '../../components/CustomCamera';
 import { uploadImage } from '../../services/uploadImage';
-import { Camera } from 'expo-camera';
+
 
 
 function Signup({ navigation }) {
