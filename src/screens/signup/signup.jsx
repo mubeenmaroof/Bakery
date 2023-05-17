@@ -10,7 +10,7 @@ import { firebase } from '../../services/firebaseConfig'
 import { CustomCamera } from '../../components/CustomCamera';
 import { Loading } from '../../components/loading';
 import { makeBlob } from '../../services/uploadImage';
-import { getARandomImageName } from '../../utils/help';
+import { getARandomImageName, showToast } from '../../utils/help';
 import Toast from 'react-native-toast-message';
 
 
@@ -37,13 +37,19 @@ function Signup({ navigation }) {
 
     // Firebase Auth 
     const signUp = () => {
+        console.log(userName, email, password);
+        //create a user account in firebase auth then upload Image
+        setShowLoading(true);
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed up successfully
                 const user = userCredential.user;
                 console.log('Signed up user:', user.uid);
+                uploadImage(imageFromCamera || imageFromPicker);
+                showToast("success", "Registered Successfully Proceed to Login", "top");
 
                 // Add Username, Email, Password in Firestore
+                setShowLoading(true)
                 firebase.firestore().collection("users").doc(email).set({
                     name: userName,
                     email: email,
@@ -54,13 +60,14 @@ function Signup({ navigation }) {
                     Alert.alert(err)
                 })
             })
-            .catch((error) => {
+            .catch((autherror) => {
                 // Error occurred
-                console.log(error);
-
+                console.log(autherror);
+                setShowLoading(false);
+                showToast("error", autherror.message, "top");
             });
-        setShowLoading(true);
-        uploadImage(imageFromCamera || imageFromPicker)
+
+
 
 
     };
