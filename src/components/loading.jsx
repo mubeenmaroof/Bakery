@@ -1,11 +1,11 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native"
+import { View, StyleSheet, ActivityIndicator } from "react-native";
+import LottieView from 'lottie-react-native';
 
 
 function Loading() {
     return (
         <View style={styles.mainCon}>
-            <ActivityIndicator size={'large'} color={'red'} />
-
+            <LottieView source={require('../../assets/Animation/loadingAnimation.json')} autoPlay loop />
         </View>
     )
 }
