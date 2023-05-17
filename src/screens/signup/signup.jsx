@@ -8,7 +8,11 @@ import { TextButton } from "../../components/textButton";
 import { MediaPicker } from '../../components/mediaPicker';
 import { firebase } from '../../services/firebaseConfig'
 import { CustomCamera } from '../../components/CustomCamera';
-import { uploadImage } from '../../services/uploadImage';
+import { Loading } from '../../components/loading';
+import { makeBlob } from '../../services/uploadImage';
+import { getARandomImageName } from '../../utils/help';
+import Toast from 'react-native-toast-message';
+
 
 
 
@@ -21,6 +25,7 @@ function Signup({ navigation }) {
     const [isCameraShown, setIsCameraShown] = useState(false);
     const [imageFromPicker, setImageFromPicker] = useState('');
     const [imageFromCamera, setImageFromCamera] = useState('');
+    const [showloading, setShowLoading] = useState(false);
 
     const handleShowPass = () => {
         setShowPass(!showPass)
@@ -51,13 +56,12 @@ function Signup({ navigation }) {
             })
             .catch((error) => {
                 // Error occurred
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log('Error:', errorCode, errorMessage);
+                console.log(error);
 
             });
-
+        setShowLoading(true);
         uploadImage(imageFromCamera || imageFromPicker)
+
 
     };
     // Navigate to Sign in Page
@@ -69,6 +73,38 @@ function Signup({ navigation }) {
         setIsPickerShown(!isPickerShown)
     };
 
+    async function uploadImage(imgUri) {
+        try {
+            const imgBlob = await makeBlob(imgUri);
+            const userStorageRef = firebase.storage().ref("users/");
+            const imageName = getARandomImageName();
+            console.log(imageName);
+            await userStorageRef
+                .child(imageName)
+                .put(imgBlob)
+                .then((uploadResponse) => {
+                    console.log(uploadResponse)
+                    setShowLoading(false);
+
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Hello',
+                        text2: 'This is some something 👋',
+                        position: 'bottom',
+                    });
+
+
+                })
+                .catch((uploadError) => {
+                    console.log(uploadError)
+                    setShowLoading(false);
+                })
+
+        } catch (blobError) {
+            console.log(blobError)
+            setShowLoading(false);
+        }
+    }
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: colors.bgColors }}>
@@ -112,7 +148,8 @@ function Signup({ navigation }) {
                     setImageFromCamera(response.uri)
                 }}
             />
-
+            {showloading && <Loading />}
+            <Toast />
         </ScrollView>
     );
 }

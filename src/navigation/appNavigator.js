@@ -10,9 +10,10 @@ function MainNav() {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="WebPage" component={webPage} />
+
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Signin" component={Signin} />
+                <Stack.Screen name="WebPage" component={webPage} />
             </Stack.Navigator>
         </NavigationContainer>
 

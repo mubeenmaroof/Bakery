@@ -4,4 +4,7 @@ function getARandomImageName() {
     return prefix + randomNum;
 }
 
+
+
+
 export { getARandomImageName };
