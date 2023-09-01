@@ -19,7 +19,7 @@ function MainNav() {
     return (
         <NavigationContainer>
 
-            <Tab.Navigator sceneContainerStyle={styles.navBottom}
+            <Tab.Navigator
                 initialRouteName={screenSignUp}
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -33,6 +33,14 @@ function MainNav() {
                         }
                         return <Ionicons name={iconName} size={size} color={color} />
                     },
+                    tabBarActiveTintColor: 'tomato',
+                    tabBarInactiveTintColor: 'gray',
+                    tabBarLabelStyle: { paddingBottom: 10, fontSize: 10 },
+                    headerShown: false,
+                    tabBarStyle: { height: 70, padding: 10 }
+
+
+
                 })}
 
 

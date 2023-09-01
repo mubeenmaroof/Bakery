@@ -28,8 +28,6 @@ function Signin({ navigation }) {
         <ScrollView style={{ flex: 1, backgroundColor: colors.bgColors }}>
             <Header title={'Sign in'} />
             <View style={styles.formCon}>
-
-
                 <Input placeholder={'Email'} showIcon={true} iconName={'mail-outline'} />
 
                 <Input placeholder={'Password'}
