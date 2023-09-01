@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Alert, Image, Text } from 'react-native';
 import { BButton } from "../../components/BButton";
 import { Input } from "../../components/input";
 import { colors, modifiers } from "../../utils/theme";
@@ -12,13 +12,16 @@ import { Loading } from '../../components/loading';
 import { makeBlob } from '../../services/uploadImage';
 import { getARandomImageName, showToast } from '../../utils/help';
 import Toast from 'react-native-toast-message';
+import { GenderSelector } from '../../components/genderSelector';
 
 
 
 
 function Signup({ navigation }) {
     const [showPass, setShowPass] = useState(false);
-    const [userName, setUserName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setlastName] = useState('');
+    const [gender, setGender] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPickerShown, setIsPickerShown] = useState(false);
@@ -26,6 +29,8 @@ function Signup({ navigation }) {
     const [imageFromPicker, setImageFromPicker] = useState('');
     const [imageFromCamera, setImageFromCamera] = useState('');
     const [showloading, setShowLoading] = useState(false);
+    const [showGender, setShowGender] = useState(false);
+    const [selectedGender, setSelectedGender] = useState();
 
     const handleShowPass = () => {
         setShowPass(!showPass)
@@ -127,7 +132,8 @@ function Signup({ navigation }) {
 
             {/* Add Username, Email, Password with Button*/}
             <View style={styles.formCon}>
-                <Input placeholder={'User Name'} showIcon={true} iconName={'person-outline'} onChange={setUserName} />
+                <Input placeholder={'First Name'} showIcon={true} iconName={'person-outline'} onChange={setFirstName} />
+                <Input placeholder={'Last Name'} showIcon={true} iconName={'person-outline'} onChange={setlastName} />
                 <Input placeholder={'Email'} showIcon={true} iconName={'mail-outline'} onChange={(text) => setEmail(text)} />
                 <Input placeholder={'Password'}
                     isSecure={!showPass}
@@ -136,6 +142,11 @@ function Signup({ navigation }) {
                     onIconPress={handleShowPass}
                     onChange={(text) => setPassword(text)}
                 />
+                <TouchableOpacity onPress={() => setShowGender(true)}>
+                    <Text> Select Gender</Text>
+                    <Text> {selectedGender?.label}</Text>
+                </TouchableOpacity>
+
                 <View style={styles.textBtnCon}>
                     <TextButton title={'Already have an account?'} onPress={goToSiginp} />
                 </View>
@@ -157,6 +168,13 @@ function Signup({ navigation }) {
             />
             {showloading && <Loading />}
             <Toast />
+            <GenderSelector show={showGender}
+                onGenderSelected={(gender => {
+                    setSelectedGender(gender)
+                    setShowGender(false)
+                })}
+
+            />
         </ScrollView>
     );
 }

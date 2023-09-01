@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 function CustomCamera({ show, onClose, onPicktureTaken }) {
-    const [type, setType] = useState(CameraType.back);
+    const [type, setType] = useState(CameraType.front);
     const [permission, requestPermission] = Camera.useCameraPermissions();
 
     const cameraRef = useRef();
@@ -24,9 +24,9 @@ function CustomCamera({ show, onClose, onPicktureTaken }) {
         if (cameraRef) {
             cameraRef.current.takePictureAsync().then(response => {
                 onPicktureTaken(response)
-            }).catch(error => {
-                alert(error)
-            })
+            }).catch((error) => {
+                alert(error);
+            });
         }
     }
     return (

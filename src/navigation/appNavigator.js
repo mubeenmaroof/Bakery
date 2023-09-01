@@ -1,24 +1,61 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { Signin } from "../screens/signin/signin";
 import { Signup } from "../screens/signup/signup";
-import { webPage } from "../screens/webPage/webPage";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet } from "react-native";
+
+
+const screensignin = 'Signin';
+const screenSignUp = 'Signup';
+
+
 
 function MainNav() {
-    const Stack = createNativeStackNavigator();
+
+
+    const Tab = createBottomTabNavigator();
 
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-                <Stack.Screen name="Signup" component={Signup} />
-                <Stack.Screen name="Signin" component={Signin} />
-                <Stack.Screen name="WebPage" component={webPage} />
-            </Stack.Navigator>
+            <Tab.Navigator sceneContainerStyle={styles.navBottom}
+                initialRouteName={screenSignUp}
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
+                        let rn = route.name;
+
+                        if (rn === screensignin) {
+                            iconName = focused ? 'home' : 'home-outline';
+                        } else if (rn === screenSignUp) {
+                            iconName = focused ? 'list' : 'list-outline';
+                        }
+                        return <Ionicons name={iconName} size={size} color={color} />
+                    },
+                })}
+
+
+
+
+            >
+                <Tab.Screen name="Signin" component={Signin} />
+                <Tab.Screen name="Signup" component={Signup} />
+
+            </Tab.Navigator>
         </NavigationContainer>
 
 
     );
 }
 
-export { MainNav }
+export { MainNav };
+
+const styles = StyleSheet.create({
+    navBottom: {
+        height: 100,
+        justifyContent: 'space-between',
+        paddingBottom: 20,
+
+    }
+})
