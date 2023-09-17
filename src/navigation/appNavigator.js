@@ -1,69 +1,57 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { Signin } from "../screens/signin/signin";
 import { Signup } from "../screens/signup/signup";
+import { Home } from "../screens/Home/Home";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { WebPage } from "../screens/webPage/webPage";
 
 
-const screensignin = 'Signin';
-const screenSignUp = 'Signup';
+const screenMain = 'Home';
+const screenWeb = 'WebPage';
+const Tab = createBottomTabNavigator();
+const stack = createNativeStackNavigator();
+function TabNav() {
+    return (
+        <Tab.Navigator
+            initialRouteName={Signin}
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    let rn = route.name;
 
+                    if (rn === screenMain) {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (rn === screenWeb) {
+                        iconName = focused ? 'list' : 'list-outline';
+                    }
+                    return <Ionicons name={iconName} size={size} color={color} />
+                },
+                tabBarActiveTintColor: 'tomato',
+                tabBarInactiveTintColor: 'gray',
+                tabBarLabelStyle: { paddingBottom: 10, fontSize: 10 },
+                headerShown: false,
+                tabBarStyle: { height: 70, padding: 10 }
+            })}>
+
+            <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="WebPage" component={WebPage} />
+        </Tab.Navigator>
+    );
+}
 
 
 function MainNav() {
-
-
-    const Tab = createBottomTabNavigator();
-
     return (
         <NavigationContainer>
-
-            <Tab.Navigator
-                initialRouteName={screenSignUp}
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        let iconName;
-                        let rn = route.name;
-
-                        if (rn === screensignin) {
-                            iconName = focused ? 'home' : 'home-outline';
-                        } else if (rn === screenSignUp) {
-                            iconName = focused ? 'list' : 'list-outline';
-                        }
-                        return <Ionicons name={iconName} size={size} color={color} />
-                    },
-                    tabBarActiveTintColor: 'tomato',
-                    tabBarInactiveTintColor: 'gray',
-                    tabBarLabelStyle: { paddingBottom: 10, fontSize: 10 },
-                    headerShown: false,
-                    tabBarStyle: { height: 70, padding: 10 }
-
-
-
-                })}
-
-
-
-
-            >
-                <Tab.Screen name="Signin" component={Signin} />
-                <Tab.Screen name="Signup" component={Signup} />
-
-            </Tab.Navigator>
+            <stack.Navigator screenOptions={{ headerShown: false }}>
+                <stack.Screen name="Signin" component={Signin} />
+                <stack.Screen name="Home" component={TabNav} />
+                <stack.Screen name="Signup" component={Signup} />
+            </stack.Navigator>
         </NavigationContainer>
-
-
     );
 }
 
 export { MainNav };
-
-const styles = StyleSheet.create({
-    navBottom: {
-        height: 100,
-        justifyContent: 'space-between',
-        paddingBottom: 20,
-
-    }
-})

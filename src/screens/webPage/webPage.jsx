@@ -1,7 +1,7 @@
 
 import { WebView } from 'react-native-webview';
 
-function webPage() {
+function WebPage() {
     return (
         <WebView
             style={{ flex: 1 }}
@@ -10,4 +10,4 @@ function webPage() {
     )
 }
 
-export { webPage };
+export { WebPage };

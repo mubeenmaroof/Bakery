@@ -6,7 +6,7 @@ import { colors, modifiers } from "../../utils/theme";
 import { Header } from "../../components/header";
 import { TextButton } from "../../components/textButton";
 import { MediaPicker } from '../../components/mediaPicker';
-import { firebase } from '../../services/firebaseConfig'
+import { firebase } from '../../services/firebaseConfig';
 import { CustomCamera } from '../../components/CustomCamera';
 import { Loading } from '../../components/loading';
 import { makeBlob } from '../../services/uploadImage';
@@ -17,20 +17,20 @@ import { GenderSelector } from '../../components/genderSelector';
 
 
 
+
 function Signup({ navigation }) {
     const [showPass, setShowPass] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setlastName] = useState('');
-    const [gender, setGender] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [gender, setGender] = useState();
     const [isPickerShown, setIsPickerShown] = useState(false);
     const [isCameraShown, setIsCameraShown] = useState(false);
     const [imageFromPicker, setImageFromPicker] = useState('');
     const [imageFromCamera, setImageFromCamera] = useState('');
     const [showloading, setShowLoading] = useState(false);
-    const [showGender, setShowGender] = useState(false);
-    const [selectedGender, setSelectedGender] = useState();
+
 
     const handleShowPass = () => {
         setShowPass(!showPass)
@@ -40,27 +40,33 @@ function Signup({ navigation }) {
         setIsPickerShown(false)
     }
 
+
+
     // Firebase Auth 
     const signUp = () => {
-        console.log(userName, email, password);
+        console.log(firstName, lastName, email, password, gender);
         //create a user account in firebase auth then upload Image
         setShowLoading(true);
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed up successfully
-                const user = userCredential.user;
+                const user = userCredential.user.uid;
                 console.log('Signed up user:', user.uid);
                 uploadImage(imageFromCamera || imageFromPicker);
                 showToast("success", "Registered Successfully Proceed to Login", "top");
+                navigation.navigate('Signin')
 
                 // Add Username, Email, Password in Firestore
                 setShowLoading(true)
                 firebase.firestore().collection("users").doc(email).set({
-                    name: userName,
+                    name: firstName, lastName,
+
                     email: email,
-                    password: password
+                    password: password,
+
                 }).then(() => {
                     alert("Sign Up Succeccfull")
+                    navigation.navigate('Signin')
                 }).catch((err) => {
                     Alert.alert(err)
                 })
@@ -120,7 +126,7 @@ function Signup({ navigation }) {
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: colors.bgColors }}>
-            <Header title={'Sign up'} />
+            <Header title={'Sign up'} onPress={goToSiginp} />
 
             {/* Image Picker From Camera */}
             <TouchableOpacity onPress={onImagePressed}>
@@ -142,10 +148,10 @@ function Signup({ navigation }) {
                     onIconPress={handleShowPass}
                     onChange={(text) => setPassword(text)}
                 />
-                <TouchableOpacity onPress={() => setShowGender(true)}>
-                    <Text> Select Gender</Text>
-                    <Text> {selectedGender?.label}</Text>
-                </TouchableOpacity>
+
+                <GenderSelector
+                />
+
 
                 <View style={styles.textBtnCon}>
                     <TextButton title={'Already have an account?'} onPress={goToSiginp} />
@@ -168,13 +174,7 @@ function Signup({ navigation }) {
             />
             {showloading && <Loading />}
             <Toast />
-            <GenderSelector show={showGender}
-                onGenderSelected={(gender => {
-                    setSelectedGender(gender)
-                    setShowGender(false)
-                })}
 
-            />
         </ScrollView>
     );
 }

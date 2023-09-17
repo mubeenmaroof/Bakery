@@ -2,10 +2,10 @@ import { Text, View, StyleSheet } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { colors, modifiers } from "../utils/theme";
 
-function Header({ title }) {
+function Header({ title, onPress }) {
     return (
         <View style={styles.headerCon}>
-            <Ionicons name={'chevron-back'} size={24} style={styles.backIcon} />
+            <Ionicons name={'chevron-back'} size={24} style={styles.backIcon} onPress={onPress} />
             <Text style={styles.title}>
                 {title}
             </Text>

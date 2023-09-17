@@ -5,13 +5,13 @@ import "firebase/compat/storage";
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA-xr0Q2k6h_JxNNFPbJOgkw0l7l1agyrA",
-    authDomain: "bakery-backend-26484.firebaseapp.com",
-    projectId: "bakery-backend-26484",
-    storageBucket: "bakery-backend-26484.appspot.com",
-    messagingSenderId: "477903395609",
-    appId: "1:477903395609:web:f9fba53fb7077379608388",
-    measurementId: "G-2GGT700EPJ"
+    apiKey: "AIzaSyAoM7f7jhL-kQtb8GAU6jTojbB2h4DYSy4",
+    authDomain: "bakery-5b24f.firebaseapp.com",
+    projectId: "bakery-5b24f",
+    storageBucket: "bakery-5b24f.appspot.com",
+    messagingSenderId: "765420498328",
+    appId: "1:765420498328:web:e6a6e9a821b422ed698fed",
+    measurementId: "G-VN5WXB53BV"
 };
 
 // Initialize Firebase
