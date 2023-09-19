@@ -7,14 +7,33 @@ import { Ionicons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { WebPage } from "../screens/webPage/webPage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { firebase } from "../services/firebaseConfig";
+import { showToast } from "../utils/help";
 
 const screenMain = "Home";
 const screenWeb = "WebPage";
 const Tab = createBottomTabNavigator();
-const stack = createNativeStackNavigator();
-const drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-function TabNav() {
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
+  );
+}
+
+function WebPageStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="WebPage" component={WebPage} />
+    </Stack.Navigator>
+  );
+}
+
+function MainTabScreen() {
   return (
     <Tab.Navigator
       initialRouteName={Signin}
@@ -37,35 +56,55 @@ function TabNav() {
         tabBarStyle: { height: 70, padding: 10 },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="WebPage" component={WebPage} />
+      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="WebPage" component={WebPageStack} />
     </Tab.Navigator>
   );
 }
-
-function StackNav() {
+function CustomDrawerContent({ navigation }) {
+  const handleLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // Successfully signed out
+        showToast("success", "You are Successfully Sign out", "top");
+        navigation.navigate("Signin"); // Redirect to the sign-in screen or any other desired destination
+      })
+      .catch((error) => {
+        showToast("error", error, "top");
+      });
+  };
   return (
-    <stack.Navigator screenOptions={{ headerShown: false }}>
-      <stack.Screen name="Signin" component={Signin} />
-      <stack.Screen name="Home" component={TabNav} />
-      <stack.Screen name="Signup" component={Signup} />
-    </stack.Navigator>
-  );
-}
+    <DrawerContentScrollView>
+      {/* Add a custom Logout button */}
+      <DrawerItem
+        label="Sign in"
+        onPress={() => navigation.navigate("Signin")}
+      />
 
-function AppDrawer() {
-  return (
-    <drawer.Navigator>
-      <drawer.Screen name="Home" component={StackNav} />
-      <drawer.Screen name="WebPage" component={WebPage} />
-    </drawer.Navigator>
+      {/* Add a custom Logout button */}
+      <DrawerItem
+        label="Sign up"
+        onPress={() => navigation.navigate("Signup")}
+      />
+      <DrawerItem label="Home" onPress={() => navigation.navigate("Home")} />
+
+      <DrawerItem label="Log out" onPress={handleLogout} />
+    </DrawerContentScrollView>
   );
 }
 
 function MainNav() {
   return (
     <NavigationContainer>
-      <AppDrawer />
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen name="Signin" component={Signin} />
+        <Drawer.Screen name="Signup" component={Signup} />
+        <Drawer.Screen name="Home" component={MainTabScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
