@@ -17,14 +17,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function HomeStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-    </Stack.Navigator>
-  );
-}
-
 function WebPageStack() {
   return (
     <Stack.Navigator>
@@ -56,7 +48,7 @@ function MainTabScreen() {
         tabBarStyle: { height: 70, padding: 10 },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="WebPage" component={WebPageStack} />
     </Tab.Navigator>
   );
@@ -89,7 +81,10 @@ function CustomDrawerContent({ navigation }) {
         onPress={() => navigation.navigate("Signup")}
       />
       <DrawerItem label="Home" onPress={() => navigation.navigate("Home")} />
-
+      <DrawerItem
+        label="WebPage"
+        onPress={() => navigation.navigate("WebPage")}
+      />
       <DrawerItem label="Log out" onPress={handleLogout} />
     </DrawerContentScrollView>
   );
