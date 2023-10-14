@@ -73,7 +73,8 @@ function AddReciepy({ show, onClose }) {
             style={{ flex: 1, justifyContent: 'flex-end' }}
         >
             <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: colors.bgColors }}>
-                <TouchableOpacity onPress={onClose} >
+                <TouchableOpacity onPress={onClose}
+                    style={{ flexDirection: 'row-reverse' }} >
                     <Ionicons name={'close-circle'} color={'black'} size={50} />
                 </TouchableOpacity>
                 <Header title={'Add New Recipy'} />
