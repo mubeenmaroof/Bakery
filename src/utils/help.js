@@ -5,6 +5,11 @@ function getARandomImageName() {
     const randomNum = Math.random();
     return prefix + randomNum;
 }
+function getARandomRecipe() {
+    const prefix = "recipe_";
+    const randomNum = Math.random();
+    return prefix + randomNum;
+}
 
 function showToast(toastType, toastMessage, toastPosition = "bottom") {
     Toast.show({
@@ -18,4 +23,4 @@ function showToast(toastType, toastMessage, toastPosition = "bottom") {
 
 
 
-export { getARandomImageName, showToast };
+export { getARandomImageName, showToast, getARandomRecipe };

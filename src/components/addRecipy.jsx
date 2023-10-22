@@ -11,7 +11,7 @@ import { firebase } from "../services/firebaseConfig";
 import { CustomCamera } from "./CustomCamera";
 import { Loading } from "./loading";
 import { makeBlob } from '../services/uploadImage';
-import { getARandomImageName } from '../utils/help';
+import { getARandomImageName, getARandomRecipe, showToast } from '../utils/help';
 import Toast from 'react-native-toast-message';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -20,15 +20,20 @@ import { Ionicons } from '@expo/vector-icons';
 
 function AddReciepy({ show, onClose }) {
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setlastName] = useState('');
-    const [email, setEmail] = useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [ingredients, setIngredents] = useState('');
     const [isPickerShown, setIsPickerShown] = useState(false);
     const [isCameraShown, setIsCameraShown] = useState(false);
     const [imageFromPicker, setImageFromPicker] = useState('');
     const [imageFromCamera, setImageFromCamera] = useState('');
     const [showloading, setShowLoading] = useState(false);
 
+
+    const onsubmit = () => {
+        setShowLoading(true)
+        uploadImage()
+    }
 
     const onImageCameFromGallery = (image) => {
         setImageFromPicker(image.uri)
@@ -39,7 +44,8 @@ function AddReciepy({ show, onClose }) {
         setIsPickerShown(!isPickerShown)
     };
 
-    async function uploadImage(imgUri) {
+    async function uploadImage() {
+        const imgUri = imageFromCamera || imageFromPicker
         try {
             const imgBlob = await makeBlob(imgUri);
             const userStorageRef = firebase.storage().ref("recipies/");
@@ -48,27 +54,44 @@ function AddReciepy({ show, onClose }) {
             await userStorageRef
                 .child(imageName)
                 .put(imgBlob)
-                .then((uploadResponse) => {
-                    console.log(uploadResponse)
-
-
-
+                .then(() => {
+                    firebase.storage().ref("recipies/" + imageName).getDownloadURL().then(downloadRes => {
+                        const imageURLonServer = downloadRes;
+                        saveRecipeData(imageURLonServer)
+                    })
                 })
                 .catch((uploadError) => {
-                    console.log(uploadError)
+                    showToast('error', uploadError.message)
                     setShowLoading(false);
                 })
 
         } catch (blobError) {
             console.log(blobError)
             setShowLoading(false);
-        }
+        };
     }
+    const saveRecipeData = (imageUrl) => {
+        const randomRecipe = getARandomRecipe();
 
+        firebase
+            .firestore()
+            .collection("recipies")
+            .doc(randomRecipe)
+            .set({
+                recipyImageUrl: imageUrl,
+                title,
+                description,
+                ingredients,
+            })
+            .then(() => {
+                setShowLoading(false);
+                showToast("success", "regestered successful", "top");
+                onClose();
+            })
+    }
     return (
         <Modal animationIn={'slideInUp'}
             animationOut={'slideOutDown'}
-            animationOutTiming={1500}
             isVisible={show}
             style={{ flex: 1, justifyContent: 'flex-end' }}
         >
@@ -89,11 +112,10 @@ function AddReciepy({ show, onClose }) {
 
                 {/* Add Username, Email, Password with Button*/}
                 <View style={styles.formCon}>
-                    <Input placeholder={'Title'} showIcon={true} onChange={setFirstName} />
-                    <Input placeholder={'Description'} showIcon={true} onChange={setlastName} />
-                    <Input placeholder={'Ingrediants'} showIcon={true} onChange={setEmail} />
-
-                    <BButton title='Submit' />
+                    <Input placeholder={'Title'} showIcon={true} onChange={setTitle} />
+                    <Input placeholder={'Description'} showIcon={true} onChange={setDescription} beMultiline={true} />
+                    <Input placeholder={'Ingrediants'} showIcon={true} onChange={setIngredents} beMultiline={true} />
+                    <BButton title='Submit' onButtonPress={onsubmit} />
                 </View>
 
                 {/* Media Picker From Camera or Gallery*/}
@@ -122,12 +144,9 @@ export { AddReciepy };
 const styles = StyleSheet.create({
     formCon: {
 
-        height: 500,
+        height: 350,
         justifyContent: 'center',
         paddingHorizontal: modifiers.containerPadding
-    },
-    textBtnCon: {
-        alignItems: 'flex-end'
     },
     imagePicker: {
         height: 100,
@@ -139,5 +158,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
 
     }
-})
+});
 

@@ -2,13 +2,14 @@ import { TextInput, StyleSheet, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons'
 import { colors, modifiers } from "../utils/theme";
 
-function Input({ onChange, placeholder, isSecure, showIcon, iconName, onIconPress }) {
+function Input({ onChange, placeholder, isSecure, showIcon, iconName, onIconPress, beMultiline }) {
     return (
         <View style={styles.inputCon}>
             <TextInput style={styles.input}
                 placeholder={placeholder}
                 onChangeText={onChange}
                 secureTextEntry={isSecure}
+                multilin={beMultiline}
 
             />
             {
