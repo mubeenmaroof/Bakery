@@ -58,9 +58,8 @@ function Signup({ navigation }) {
 
                 // Add Username, Email, Password in Firestore
                 setShowLoading(true)
-                firebase.firestore().collection("users").doc(email).set({
+                firebase.firestore().collection("users/").doc(email).set({
                     name: firstName, lastName,
-
                     email: email,
                     password: password,
 

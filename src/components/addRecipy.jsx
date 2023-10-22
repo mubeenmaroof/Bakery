@@ -16,8 +16,6 @@ import Toast from 'react-native-toast-message';
 import { Ionicons } from '@expo/vector-icons';
 
 
-
-
 function AddReciepy({ show, onClose }) {
 
     const [title, setTitle] = useState('');
@@ -75,7 +73,7 @@ function AddReciepy({ show, onClose }) {
 
         firebase
             .firestore()
-            .collection("recipies")
+            .collection("recipies/")
             .doc(randomRecipe)
             .set({
                 recipyImageUrl: imageUrl,
