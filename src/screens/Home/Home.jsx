@@ -8,6 +8,9 @@ import { firebase } from '../../services/firebaseConfig';
 import { Loading } from "../../components/loading";
 import Swiper from "react-native-swiper";
 import { showToast } from "../../utils/help";
+import dayjs from "dayjs";
+import { Input } from "../../components/input";
+import { ScrollView } from "react-native-gesture-handler";
 
 const sliderHeight = 250;
 const slideHeight = 250;
@@ -17,8 +20,7 @@ function Home() {
   const [showAddRecipy, setShowAddRecipy] = useState(false);
   const [showloading, setShowLoading] = useState(false);
   const [recipieData, setRecipieData] = useState([]);
-
-
+  const [recipieFilteredData, setRecipieFilteredData] = useState();
   useEffect(() => {
     fetchRecipyFromDB()
   }, [])
@@ -80,10 +82,19 @@ function Home() {
       recipieImage: "https://cdn.pixabay.com/photo/2019/07/12/02/19/potatoes-4331742_1280.jpg"
     },
   ]
+  const onUserInput = (text) => {
+    const filteredData = recipieData.filter(item => item.data().title?.includes(text))
+    if (filteredData.length > 0) {
+      setRecipieFilteredData(filteredData)
+    } else {
 
+    }
+  }
   return (
     <View
       style={{ flex: 1 }}>
+      <Input placeholder={'Search'} showIcon={true} iconName={'search'} onChange={onUserInput} />
+
       <View style={{ height: sliderHeight }}>
         <Swiper style={styles.wrapper} showsButtons={true}>
           <ImageBackground source={{ uri: famousRecipies[0].recipieImage }} style={styles.slide1}>
@@ -102,27 +113,28 @@ function Home() {
       </View>
 
       <FlatList
-        data={recipieData}
-        horizontal={true}
+        data={recipieFilteredData || recipieData}
         renderItem={__renderItem}
         ListEmptyComponent={<Text>No Recipy Found</Text>}
         refreshing={showloading}
         onRefresh={() => fetchRecipyFromDB()}
+        horizontal={true}
+
       />
 
-      <Toast />
+
+
+      <AddReciepy show={showAddRecipy}
+        onClose={() => setShowAddRecipy(false)}
+      />
+
       <FloatingAction
         color={colors.primary}
         onPressMain={() => { setShowAddRecipy(true) }}
 
       />
-      <AddReciepy show={showAddRecipy}
-        onClose={() => setShowAddRecipy(false)}
-      />
 
-
-
-
+      <Toast />
     </View>
   );
 }
