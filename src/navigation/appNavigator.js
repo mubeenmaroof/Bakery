@@ -26,13 +26,7 @@ function WebPageStack() {
     </Stack.Navigator>
   );
 }
-function seting() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Settings" component={Settings} />
-    </Stack.Navigator>
-  );
-}
+
 
 function MainTabScreen() {
   return (
@@ -60,7 +54,7 @@ function MainTabScreen() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Settings" component={seting} />
+      <Tab.Screen name="Settings" component={Settings} />
       <Tab.Screen name="WebPage" component={WebPageStack} />
     </Tab.Navigator>
   );
