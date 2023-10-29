@@ -11,16 +11,21 @@ import { showToast } from "../../utils/help";
 import dayjs from "dayjs";
 import { Input } from "../../components/input";
 import { ScrollView } from "react-native-gesture-handler";
+import { BButton } from "../../components/BButton";
+import { Counter } from "../../components/counter";
+
+
 
 const sliderHeight = 250;
 const slideHeight = 250;
 
 
-function Home() {
+function Home({ navigation }) {
   const [showAddRecipy, setShowAddRecipy] = useState(false);
   const [showloading, setShowLoading] = useState(false);
   const [recipieData, setRecipieData] = useState([]);
   const [recipieFilteredData, setRecipieFilteredData] = useState();
+
   useEffect(() => {
     fetchRecipyFromDB()
   }, [])
@@ -119,10 +124,11 @@ function Home() {
         refreshing={showloading}
         onRefresh={() => fetchRecipyFromDB()}
         horizontal={true}
-
       />
-
-
+      <View style={{ backgroundColor: "red", height: 100, width: "100%" }}>
+        <Counter />
+      </View>
+      <BButton title={"Go to recipies list"} onButtonPress={() => navigation.navigate("Recipies")} />
 
       <AddReciepy show={showAddRecipy}
         onClose={() => setShowAddRecipy(false)}
@@ -131,7 +137,6 @@ function Home() {
       <FloatingAction
         color={colors.primary}
         onPressMain={() => { setShowAddRecipy(true) }}
-
       />
 
       <Toast />

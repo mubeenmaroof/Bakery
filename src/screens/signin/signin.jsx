@@ -16,6 +16,8 @@ function Signin({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
+
   const handleShowPass = () => {
     if (showPass === true) {
       setShowPass(false);
@@ -61,10 +63,10 @@ function Signin({ navigation }) {
 
       await firebase.auth().signInWithEmailAndPassword(email, password);
       console.log("User signed in");
-      showToast("success", "You are The Authentic User", "top");
-      alert("You are The Authentic User");
-      navigation.navigate("Home");
       setShowLoading(false);
+      navigation.navigate("Home");
+      showToast("success", "You are The Authentic User", "top");
+
     } catch (error) {
       setShowLoading(false);
       if (error.code === "auth/user-not-found") {

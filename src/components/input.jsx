@@ -1,5 +1,5 @@
 import { TextInput, StyleSheet, View } from "react-native";
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons';
 import { colors, modifiers } from "../utils/theme";
 
 function Input({ onChange, placeholder, isSecure, showIcon, iconName, onIconPress, beMultiline }) {

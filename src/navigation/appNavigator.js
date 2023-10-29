@@ -11,10 +11,13 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { firebase } from "../services/firebaseConfig";
 import { showToast } from "../utils/help";
 import { Settings } from "../screens/settings/settings";
+import { RecipiesDetail } from "../screens/resipiesDetail/recipyDetail";
+import { Recipies } from "../screens/Recipies/Recipies";
 
 const screenMain = "Home";
 const screenWeb = "WebPage";
 const setting = "Settings";
+const recipyDetail = "RecipiesDetail";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -23,6 +26,8 @@ function WebPageStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="WebPage" component={WebPage} />
+      <Stack.Screen name="Recipies" component={Recipies} />
+      <Stack.Screen name="RecipiesDetail" component={RecipiesDetail} />
     </Stack.Navigator>
   );
 }
@@ -43,6 +48,8 @@ function MainTabScreen() {
             iconName = focused ? "list" : "list-outline";
           } else if (rn === setting) {
             iconName = focused ? "list" : "list-outline";
+          } else if (rn === recipyDetail) {
+            iconName = focused ? "list" : "list-outline";
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -55,6 +62,7 @@ function MainTabScreen() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="RecipiesDetail" component={RecipiesDetail} />
       <Tab.Screen name="WebPage" component={WebPageStack} />
     </Tab.Navigator>
   );
@@ -92,6 +100,14 @@ function CustomDrawerContent({ navigation }) {
         onPress={() => navigation.navigate("WebPage")}
       />
       <DrawerItem
+        label="Recipies"
+        onPress={() => navigation.navigate("Recipies")}
+      />
+      <DrawerItem
+        label="RecipiesDetail"
+        onPress={() => navigation.navigate("RecipiesDetail")}
+      />
+      <DrawerItem
         label="Settings"
         onPress={() => navigation.navigate("Settings")}
       />
@@ -108,6 +124,7 @@ function MainNav() {
       >
         <Drawer.Screen name="Signin" component={Signin} />
         <Drawer.Screen name="Signup" component={Signup} />
+        <Drawer.Screen name="Recipies" component={Recipies} />
         <Drawer.Screen name="Settings" component={Settings} />
         <Drawer.Screen name="Home" component={MainTabScreen} />
       </Drawer.Navigator>
